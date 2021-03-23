@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using static UnityEditor.Progress;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if(PV.IsMine)
         {
             EquipItem(0);
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else {
             Destroy(GetComponentInChildren<Camera>().gameObject);
