@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using static UnityEditor.Progress;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using TMPro;
+using UnityEngine.UI;
+
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
     [SerializeField] GameObject cameraHolder;
@@ -150,6 +150,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             return;
         
         currentHealth -= damage;
+        GameObject.Find("HealthText").GetComponent<Text>().text =  "Test Health";
 
         if (currentHealth <= 0) {
             Die();
