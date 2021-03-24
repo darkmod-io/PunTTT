@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 545764842621363692}
   - component: {fileID: 8683572550696489518}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -667,6 +667,7 @@ MonoBehaviour:
   items:
   - {fileID: 7862023489689660810}
   - {fileID: 254395006331588167}
+  playerUI: {fileID: 2275151824540445204}
 --- !u!1 &4961826075250031180
 GameObject:
   m_ObjectHideFlags: 0

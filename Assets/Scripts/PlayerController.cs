@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     const float maxHealth = 100f;
     float currentHealth = maxHealth;
+    public GameObject playerUI;
 
     PlayerManager playerManager;
     void Awake()
@@ -150,7 +151,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             return;
         
         currentHealth -= damage;
-        GameObject.Find("HealthText").GetComponent<Text>().text =  "Test Health";
+
+        playerUI.GetComponentsInChildren<Text>()[0].text =  currentHealth + " Health";
 
         if (currentHealth <= 0) {
             Die();
