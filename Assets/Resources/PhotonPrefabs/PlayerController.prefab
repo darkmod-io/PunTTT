@@ -667,7 +667,7 @@ MonoBehaviour:
   items:
   - {fileID: 7862023489689660810}
   - {fileID: 254395006331588167}
-  playerUI: {fileID: 2275151824540445204}
+  playerHealthText: {fileID: 3647223203652223941}
 --- !u!1 &4961826075250031180
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,6 +678,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4363609175156978275}
   - component: {fileID: 7862023489689660810}
+  - component: {fileID: 4300494247779831870}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -714,7 +715,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: 82156431fd1c0e3418485e9f9d3d833e, type: 2}
   itemGameObject: {fileID: 8100504549806503249}
+  bulletImpactPrefab: {fileID: 1253477583444890487, guid: 1620144c5c793ff41b1e6223d8675e5e, type: 3}
   cam: {fileID: 556670565597857188}
+--- !u!114 &4300494247779831870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4961826075250031180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6717620342793740108
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,6 +821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6312198946954581609}
   - component: {fileID: 254395006331588167}
+  - component: {fileID: 6471332560014181388}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -833,7 +858,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: 10c1b9a92863dfc4abad6ea2e6421eeb, type: 2}
   itemGameObject: {fileID: 9041311502533144593}
+  bulletImpactPrefab: {fileID: 1253477583444890487, guid: 1620144c5c793ff41b1e6223d8675e5e, type: 3}
   cam: {fileID: 556670565597857188}
+--- !u!114 &6471332560014181388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433734548341056174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7931339254540469276
 GameObject:
   m_ObjectHideFlags: 0
