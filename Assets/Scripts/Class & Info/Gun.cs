@@ -7,7 +7,8 @@ public abstract class Gun : Item
     public abstract override void Use();
     public GameObject bulletImpactPrefab;
     public GameObject bulletImpactPrefabPlayer;
-    public void Reload(Animator _animator) {
+    public Animator _animator;
+    public void Reload() {
         StartCoroutine(Reloading(_animator, ((GunInfo) itemInfo).reloadTime));
         ((GunInfo) itemInfo).currentAmmo = ((GunInfo) itemInfo).maxAmmo;        
     }

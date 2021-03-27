@@ -153,7 +153,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0/0 Ammo
+  m_Text: 
 --- !u!1 &5606673374010355822
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,9 +232,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '100/100 Health
-
-'
+  m_Text: 
 --- !u!1 &6432471062142040985
 GameObject:
   m_ObjectHideFlags: 0

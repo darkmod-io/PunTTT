@@ -77,7 +77,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             nextTimeToFire = Time.time + 1f / ((GunInfo) items[itemIndex].itemInfo).fireRate;
             items[itemIndex].Use();
             playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
-            // Hallo Eddy
+        }
+
+        if (Input.GetKeyDown(KeyCode.R)) {
+            ((Gun) items[itemIndex]).Reload();
+            playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
     }
 
@@ -98,7 +102,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
     }
-
     void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
@@ -106,7 +109,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             rb.AddForce(transform.up * jumpForce);
         }
     }
-
     void EquipItem(int _itemIndex) {
 
         if(_itemIndex == previousItemIndex)

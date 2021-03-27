@@ -9,7 +9,8 @@ public class SingleShotGun : Gun
     [SerializeField] Camera cam;
 
     void Awake() {
-        PV = GetComponent<PhotonView>();    
+        PV = GetComponent<PhotonView>();  
+        _animator = GetComponentInParent<Animator>();  
     }
 
     public override void Use() {
@@ -17,7 +18,7 @@ public class SingleShotGun : Gun
             Shoot();   
         }
         else {
-            Reload(GetComponentInParent<Animator>());
+            Reload();
         }
     }
 
