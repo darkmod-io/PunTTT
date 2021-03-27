@@ -27,9 +27,9 @@ public class SingleShotGun : Gun
 
     [PunRPC]
     void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal) {
-        Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
+        Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.5f);
         GameObject bulletImpact = Instantiate(bulletImpactPrefab, hitPosition + hitNormal * 0.001f, Quaternion.LookRotation(hitNormal, Vector3.up) * bulletImpactPrefab.transform.rotation);
-        bulletImpact.transform.SetParent(colliders[0].transform);
-        Destroy(bulletImpact, 10f);  
+        if (colliders.Length > 0) bulletImpact.transform.SetParent(colliders[0].transform);
+        Destroy(bulletImpact, 3f);  
     }
 }
