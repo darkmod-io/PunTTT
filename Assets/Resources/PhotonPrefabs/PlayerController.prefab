@@ -92,6 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5774071215488969783}
+  - component: {fileID: 1724264548956398980}
   m_Layer: 0
   m_Name: ItemHolder
   m_TagString: Untagged
@@ -107,7 +108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3154088633220574821}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.56, y: 0, z: 1.954}
+  m_LocalPosition: {x: 0.56, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4363609175156978275}
@@ -115,6 +116,25 @@ Transform:
   m_Father: {fileID: 5898885977183117014}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!95 &1724264548956398980
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3154088633220574821}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1ad457787ca7f7e4488c0d92064012b2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3190225984253980714
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,9 +208,11 @@ GameObject:
   - component: {fileID: 2672460087814424632}
   - component: {fileID: 8354365194310683951}
   - component: {fileID: 8987773535661408027}
+  - component: {fileID: 5181237792746128720}
+  - component: {fileID: 990423202654932540}
   m_Layer: 0
   m_Name: PlayerController
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -310,6 +332,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8354365194310683951}
+  - {fileID: 990423202654932540}
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -350,6 +373,43 @@ MonoBehaviour:
   items:
   - {fileID: 7862023489689660810}
   - {fileID: 254395006331588167}
+--- !u!95 &5181237792746128720
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741518563021343916}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &990423202654932540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741518563021343916}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &4961826075250031180
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +458,7 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: 82156431fd1c0e3418485e9f9d3d833e, type: 2}
   itemGameObject: {fileID: 8100504549806503249}
   bulletImpactPrefab: {fileID: 1253477583444890487, guid: 1620144c5c793ff41b1e6223d8675e5e, type: 3}
+  bulletImpactPrefabPlayer: {fileID: 7488334199759468297, guid: fcfc61a423d9ac8469d19c3f990a4ce8, type: 3}
   cam: {fileID: 556670565597857188}
 --- !u!114 &4300494247779831870
 MonoBehaviour:
@@ -469,6 +530,7 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: 10c1b9a92863dfc4abad6ea2e6421eeb, type: 2}
   itemGameObject: {fileID: 9041311502533144593}
   bulletImpactPrefab: {fileID: 1253477583444890487, guid: 1620144c5c793ff41b1e6223d8675e5e, type: 3}
+  bulletImpactPrefabPlayer: {fileID: 7488334199759468297, guid: fcfc61a423d9ac8469d19c3f990a4ce8, type: 3}
   cam: {fileID: 556670565597857188}
 --- !u!114 &6471332560014181388
 MonoBehaviour:
@@ -539,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8052994700471140886
 Transform:
   m_ObjectHideFlags: 0

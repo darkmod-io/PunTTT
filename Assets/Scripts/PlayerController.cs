@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     const float maxHealth = 100f;
     float currentHealth = maxHealth;
+    float nextTimeToFire = 1f;
 
     PlayerManager playerManager;
 
@@ -39,6 +40,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             EquipItem(0);
             Cursor.lockState = CursorLockMode.Locked;
+            ((GunInfo) items[itemIndex].itemInfo).currentAmmo = ((GunInfo) items[itemIndex].itemInfo).maxAmmo;
+            playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
         else {
             Destroy(GetComponentInChildren<Camera>().gameObject);
@@ -70,8 +73,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             else EquipItem(itemIndex - 1);
         }
         
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && !((GunInfo) items[itemIndex].itemInfo).isReloading) {
+            nextTimeToFire = Time.time + 1f / ((GunInfo) items[itemIndex].itemInfo).fireRate;
             items[itemIndex].Use();
+            playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
     }
 
@@ -120,6 +125,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             hash.Add("itemIndex", itemIndex);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
+
+        playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

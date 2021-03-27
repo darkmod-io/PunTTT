@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
 
     GameObject controller;
     public Text healthText;
+    public Text ammoText;
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -33,7 +34,11 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void RefreshHealthDisplay(float healthAmount) {
-        healthText.text = healthAmount.ToString() + " Health";
+        healthText.text = healthAmount.ToString() + "/100 Health";
+    }
+
+    public void RefreshAmmoDisplay(float currentAmmoAmount, float maxAmmoAmount) {
+        ammoText.text = currentAmmoAmount.ToString() + "/" + maxAmmoAmount.ToString() + " Ammo";
     }
 
     public void Die() {

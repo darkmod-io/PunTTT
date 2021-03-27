@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Pistol
   damage: 20
+  maxAmmo: 12
+  currentAmmo: 0
+  reloadTime: 1
+  fireRate: 5
+  isReloading: 0
