@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             nextTimeToFire = Time.time + 1f / ((GunInfo) items[itemIndex].itemInfo).fireRate;
             items[itemIndex].Use();
             playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            // Hallo Eddy
         }
     }
 
