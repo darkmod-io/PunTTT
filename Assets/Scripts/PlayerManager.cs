@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     PhotonView PV;
 
     GameObject controller;
-    // GameObject deathUI;
+    GameObject deathUI;
     GameObject deathScreen;
     GameObject deathText;
     void Awake()
@@ -23,9 +23,13 @@ public class PlayerManager : MonoBehaviour
         if(PV.IsMine)
         {
             CreateController();
-            // deathUI = GameObject.Find("DeathCanvas");
-            deathScreen = GameObject.Find("DeathCanvas").GetComponentInChildren<RawImage>().gameObject;
-            deathScreen = GameObject.Find("DeathCanvas").GetComponentInChildren<Text>().gameObject;
+
+
+            deathUI = GameObject.FindGameObjectWithTag("DeathUI");
+            deathScreen = deathUI.GetComponentsInChildren<CanvasRenderer>()[0].gameObject;
+            deathText = deathUI.GetComponentsInChildren<CanvasRenderer>()[1].gameObject;
+            
+            toggleDeathScreen();
         }
     }
 
@@ -44,6 +48,5 @@ public class PlayerManager : MonoBehaviour
     private void toggleDeathScreen() {
         deathScreen.SetActive(!deathScreen.activeInHierarchy);
         deathText.SetActive(!deathText.activeInHierarchy);
-        // foreach (GameObject deathUIChild in )
     }
 }
