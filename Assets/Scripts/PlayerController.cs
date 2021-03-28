@@ -143,6 +143,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (!PV.IsMine && targetPlayer == PV.Owner) {
             EquipItem((int) changedProps["itemIndex"]);
+            InitializeName((string) changedProps["nameTag"]);
         }
     }
     public void SetGroundedState(bool _grounded)
@@ -177,8 +178,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     }
 
     void InitializeName(string username) {
+        nameTag.text = username;
+        
         if (PV.IsMine) {
-            nameTag.text = username;
             Hashtable hash = new Hashtable();
             hash.Add("nameTag", username);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
