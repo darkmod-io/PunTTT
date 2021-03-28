@@ -11,10 +11,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public static Launcher Instance;
 
+    [SerializeField] TMP_InputField username;
+    public string _username;
     [SerializeField] TMP_InputField rommNameInputField;
     [SerializeField] TMP_Text errorText;
     [SerializeField] TMP_Text roomNameText;
-    [SerializeField] TMP_InputField username;
     [SerializeField] Transform roomListContent;
     [SerializeField] Transform playerListContent;
     [SerializeField] GameObject roomListItemPrefab;
@@ -40,12 +41,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        if (username.text == "") {
-            PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        }
-        else 
-            PhotonNetwork.NickName = username.text;
-            
+
         MenuManager.Instance.OpenMenu("title");
         Debug.Log("Joined Lobby");
     }
@@ -62,6 +58,14 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        if (username.text == "" && _username == "") {
+            PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        }
+        else {
+            if (_username != "") PhotonNetwork.NickName = _username;
+            else PhotonNetwork.NickName = username.text;
+        }
+            
         MenuManager.Instance.OpenMenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
