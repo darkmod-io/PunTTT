@@ -40,7 +40,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             EquipItem(0);
             Cursor.lockState = CursorLockMode.Locked;
-            ((GunInfo) items[itemIndex].itemInfo).currentAmmo = ((GunInfo) items[itemIndex].itemInfo).maxAmmo;
+            
+            foreach (Item item in items) {
+                ((GunInfo) item.itemInfo).currentAmmo = ((GunInfo) item.itemInfo).maxAmmo;
+            }
+            
             playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
         else {

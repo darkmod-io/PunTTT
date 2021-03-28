@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     GameObject controller;
     public Text healthText;
     public Text ammoText;
+    public RawImage Death;
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -28,6 +29,7 @@ public class PlayerManager : MonoBehaviour
 
     void CreateController()
     {
+        Death.gameObject.SetActive(false);
         Transform spawnpoint = SpawnManager.Instance.GetSpawnpoint();
         controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
         if (PV.IsMine) RefreshHealthDisplay(100f);
@@ -42,7 +44,9 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void Die() {
+        Death.gameObject.SetActive(true);
         PhotonNetwork.Destroy(controller);
-        CreateController();
+        
+        Invoke("CreateController", 2f);
     }
 }
