@@ -374,6 +374,7 @@ MonoBehaviour:
   items:
   - {fileID: 7862023489689660810}
   - {fileID: 254395006331588167}
+  nameTag: {fileID: 4424443795907201912}
 --- !u!95 &5181237792746128720
 Animator:
   serializedVersion: 3

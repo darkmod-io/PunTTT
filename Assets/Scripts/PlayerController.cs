@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     float nextTimeToFire = 1f;
 
     PlayerManager playerManager;
+    public TMP_Text nameTag;
 
     void Awake()
     {
@@ -35,10 +36,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     }
 
     void Start()
-    {
+    {        
         if(PV.IsMine)
         {
             EquipItem(0);
+            InitializeName(PhotonNetwork.NickName);
             Cursor.lockState = CursorLockMode.Locked;
             
             foreach (Item item in items) {
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             }
             
             playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            
         }
         else {
             Destroy(GetComponentInChildren<Camera>().gameObject);
@@ -173,6 +176,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
+    void InitializeName(string username) {
+        if (PV.IsMine) {
+            nameTag.text = username;
+            Hashtable hash = new Hashtable();
+            hash.Add("nameTag", username);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            nameTag.text = PhotonNetwork.NickName;
+        }
+    }
     void Die() {
         playerManager.Die();
     }
