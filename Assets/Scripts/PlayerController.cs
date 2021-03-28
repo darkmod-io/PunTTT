@@ -27,6 +27,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     PlayerManager playerManager;
     public TMP_Text nameTag;
 
+    public GameObject playerUI;
+    public Text healthText;
+    public Text ammoText;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -46,13 +50,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             foreach (Item item in items) {
                 ((GunInfo) item.itemInfo).currentAmmo = ((GunInfo) item.itemInfo).maxAmmo;
             }
-            
-            playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            healthText.text = "100/100 Health";
+            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
             
         }
         else {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
+            Destroy(playerUI);
         }
     }
 
@@ -83,12 +88,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && !((GunInfo) items[itemIndex].itemInfo).isReloading) {
             nextTimeToFire = Time.time + 1f / ((GunInfo) items[itemIndex].itemInfo).fireRate;
             items[itemIndex].Use();
-            playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
 
         if (Input.GetKeyDown(KeyCode.R)) {
             ((Gun) items[itemIndex]).Reload();
-            playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
     }
 
@@ -134,7 +139,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Hashtable hash = new Hashtable();
             hash.Add("itemIndex", itemIndex);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-            playerManager.RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
 
     }
@@ -142,8 +147,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (!PV.IsMine && targetPlayer == PV.Owner) {
-            EquipItem((int) changedProps["itemIndex"]);
-            InitializeName((string) changedProps["nameTag"]);
+            if (changedProps["itemIndex"] != null) EquipItem((int) changedProps["itemIndex"]);
+            if (changedProps["nameTag"]   != null) InitializeName((string) changedProps["nameTag"]);
         }
     }
     public void SetGroundedState(bool _grounded)
@@ -170,7 +175,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         
         currentHealth -= damage;
 
-        playerManager.RefreshHealthDisplay(currentHealth);
+        healthText.text = currentHealth.ToString()  + "/100 Health";
 
         if (currentHealth <= 0) {
             Die();
@@ -189,5 +194,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     }
     void Die() {
         playerManager.Die();
+    }
+
+    public void RefreshAmmoDisplay(float currentAmmoAmount, float maxAmmoAmount) {
+        ammoText.text = currentAmmoAmount.ToString() + "/" + maxAmmoAmount.ToString() + " Ammo";
     }
 }
