@@ -628,6 +628,7 @@ MonoBehaviour:
   nameTag: {fileID: 4424443795907201912}
   playerUI: {fileID: 2373366232117953861}
   healthText: {fileID: 1346298734334347789}
+  roleName: No Role
 --- !u!95 &876236713582016611
 Animator:
   serializedVersion: 3
