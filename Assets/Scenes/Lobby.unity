@@ -4399,7 +4399,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   username: {fileID: 808908458}
-  _username: 
   rommNameInputField: {fileID: 1738064297}
   errorText: {fileID: 466846043}
   roomNameText: {fileID: 770822427}
@@ -4427,7 +4426,6 @@ MonoBehaviour:
   - {fileID: 1293891350}
   - {fileID: 2035176292}
   - {fileID: 1103418620}
-  username: {fileID: 808908458}
 --- !u!1 &1999001034
 GameObject:
   m_ObjectHideFlags: 0
