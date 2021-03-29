@@ -7,14 +7,16 @@ public class SingleShotGun : Gun
 {
     PhotonView PV;
     [SerializeField] Camera cam;
+    [SerializeField] Animator animator;
+    public PhotonAnimatorView PAV;
 
     void Awake() {
-        PV = GetComponent<PhotonView>();  
-        _animator = GetComponentInParent<Animator>();  
+        PV = GetComponent<PhotonView>();
     }
 
     public override void Use() {
         if (((GunInfo) itemInfo).currentAmmo > 0) {
+            if (((GunInfo) itemInfo).currentAmmo == 1) ((GunInfo) itemInfo).nextTimeToFire = 1f;
             Shoot();   
         }
         else {
@@ -24,6 +26,7 @@ public class SingleShotGun : Gun
 
     void Shoot() {
         ((GunInfo) itemInfo).currentAmmo--;
+        RefreshAmmoDisplay(((GunInfo) itemInfo).currentAmmo, ((GunInfo) itemInfo).maxAmmo);
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
         if (Physics.Raycast(ray, out RaycastHit hit)) {
@@ -31,6 +34,26 @@ public class SingleShotGun : Gun
             Debug.Log("Hit: " + hit.collider.gameObject.name);
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
         }
+    }
+    public override void Reload() {
+        StartCoroutine(Reloading(((GunInfo) itemInfo).reloadTime));       
+    }
+    IEnumerator Reloading(float reloadTime)
+    {
+        ((GunInfo) itemInfo).isReloading = true;
+
+        animator.SetBool("isReloading", true);
+        Debug.Log("Started reloading");
+
+        yield return new WaitForSeconds(reloadTime - 0.5f);
+        animator.SetBool("isReloading", false);
+        
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log("Finished reloading");
+        
+        ((GunInfo) itemInfo).currentAmmo = ((GunInfo) itemInfo).maxAmmo; 
+        ((GunInfo) itemInfo).isReloading = false;
+        RefreshAmmoDisplay(((GunInfo) itemInfo).currentAmmo, ((GunInfo) itemInfo).maxAmmo);
     }
 
     [PunRPC]

@@ -10,5 +10,6 @@ public class GunInfo : ItemInfo
     public float currentAmmo;
     public float reloadTime;
     public float fireRate;
+    public float nextTimeToFire;
     public bool isReloading = false;
 }

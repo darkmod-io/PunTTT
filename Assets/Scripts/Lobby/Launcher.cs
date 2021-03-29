@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -43,6 +44,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {        
         MenuManager.Instance.OpenMenu("title");
         Debug.Log("Joined Lobby");
+        username.Select();
     }
 
     public void CreateRoom()
@@ -106,6 +108,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         MenuManager.Instance.OpenMenu("title");
+        username.Select();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -130,7 +133,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
 
     void OnFinishedInputname(string _username) {
-        if (_username == "") 
+        if (_username == "" || _username == null) 
             PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         else 
             PhotonNetwork.NickName = _username;

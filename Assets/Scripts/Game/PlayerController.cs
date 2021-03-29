@@ -22,14 +22,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     const float maxHealth = 100f;
     float currentHealth = maxHealth;
-    float nextTimeToFire = 1f;
 
     PlayerManager playerManager;
     public TMP_Text nameTag;
 
     public GameObject playerUI;
     public Text healthText;
-    public Text ammoText;
 
     void Awake()
     {
@@ -51,8 +49,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 ((GunInfo) item.itemInfo).currentAmmo = ((GunInfo) item.itemInfo).maxAmmo;
             }
             healthText.text = "100/100 Health";
-            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
-            
+            ((Gun) items[itemIndex]).RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            ((GunInfo) items[itemIndex].itemInfo).nextTimeToFire = 1f;
         }
         else {
             Destroy(GetComponentInChildren<Camera>().gameObject);
@@ -82,18 +80,27 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             else                               EquipItem(itemIndex + 1);
         } else if(Input.GetAxisRaw("Mouse ScrollWheel") < 0) {
             if (itemIndex <= 0) EquipItem(items.Length - 1);
-            else EquipItem(itemIndex - 1);
+            else                EquipItem(itemIndex - 1);
         }
         
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && !((GunInfo) items[itemIndex].itemInfo).isReloading) {
-            nextTimeToFire = Time.time + 1f / ((GunInfo) items[itemIndex].itemInfo).fireRate;
-            items[itemIndex].Use();
-            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+        if (Input.GetMouseButtonDown(0)) {
+            if (Time.time >= ((GunInfo) items[itemIndex].itemInfo).nextTimeToFire) {
+                if (!((GunInfo) items[itemIndex].itemInfo).isReloading) {
+                    ((GunInfo) items[itemIndex].itemInfo).nextTimeToFire = Time.time + 1f / ((GunInfo) items[itemIndex].itemInfo).fireRate;
+                    items[itemIndex].Use();
+                }
+                else {
+                    Debug.Log("You are currently reloading and therefor cannot shoot right now!");
+                }
+            }
+            else {
+                Debug.Log("You must wait " + (((GunInfo) items[itemIndex].itemInfo).nextTimeToFire - Time.time).ToString() + "s before shooting again!");
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R)) {
             ((Gun) items[itemIndex]).Reload();
-            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            ((Gun) items[itemIndex]).RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
     }
 
@@ -139,7 +146,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Hashtable hash = new Hashtable();
             hash.Add("itemIndex", itemIndex);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-            RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
+            ((Gun) items[itemIndex]).RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
 
     }
@@ -196,7 +203,5 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         playerManager.Die();
     }
 
-    public void RefreshAmmoDisplay(float currentAmmoAmount, float maxAmmoAmount) {
-        ammoText.text = currentAmmoAmount.ToString() + "/" + maxAmmoAmount.ToString() + " Ammo";
-    }
+    
 }
