@@ -654,7 +654,7 @@ GameObject:
   - component: {fileID: 7949264244162646451}
   - component: {fileID: 718147581984733637}
   - component: {fileID: 1069620091408857928}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1263,6 +1263,9 @@ MonoBehaviour:
   cam: {fileID: 556670565597857188}
   animator: {fileID: 876236713582016611}
   PAV: {fileID: 2071345461128796177}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 51
 --- !u!114 &4300494247779831870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1603,6 +1606,9 @@ MonoBehaviour:
   cam: {fileID: 556670565597857188}
   animator: {fileID: 876236713582016611}
   PAV: {fileID: 2071345461128796177}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 51
 --- !u!114 &6471332560014181388
 MonoBehaviour:
   m_ObjectHideFlags: 0

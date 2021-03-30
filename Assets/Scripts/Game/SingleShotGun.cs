@@ -9,6 +9,7 @@ public class SingleShotGun : Gun
     [SerializeField] Camera cam;
     [SerializeField] Animator animator;
     public PhotonAnimatorView PAV;
+    public LayerMask layerMask;
 
     void Awake() {
         PV = GetComponent<PhotonView>();
@@ -16,11 +17,11 @@ public class SingleShotGun : Gun
 
     public override void Use() {
         if (((GunInfo) itemInfo).currentAmmo > 0) {
-            if (((GunInfo) itemInfo).currentAmmo == 1) ((GunInfo) itemInfo).nextTimeToFire = Time.time + 1f;
+            // if (((GunInfo) itemInfo).currentAmmo == 1) ((GunInfo) itemInfo).nextTimeToFire = Time.time + 1f;
             Shoot();   
         }
         else {
-            ((GunInfo) itemInfo).nextTimeToFire = Time.time + 1f;
+            // ((GunInfo) itemInfo).nextTimeToFire = Time.time + 1f;
             Reload();
         }
     }
@@ -30,9 +31,10 @@ public class SingleShotGun : Gun
         RefreshAmmoDisplay(((GunInfo) itemInfo).currentAmmo, ((GunInfo) itemInfo).maxAmmo);
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
-        if (Physics.Raycast(ray, out RaycastHit hit)) {
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000, layerMask)) {
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo) itemInfo).damage);
-            Debug.Log("Hit: " + hit.collider.gameObject.name);
+            if (hit.collider.tag == "Player") Debug.Log("Hit Player: '" + hit.collider.GetComponent<PlayerController>().username + "'.");
+            else Debug.Log("Hit: " + hit.collider.gameObject.name);
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
         }
     }
