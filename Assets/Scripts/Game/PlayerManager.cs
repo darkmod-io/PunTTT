@@ -21,7 +21,6 @@ public class PlayerManager : MonoBehaviour
         {
             CreateController();
 
-
             deathUI = GameObject.FindGameObjectWithTag("DeathUI");
             deathScreen = deathUI.GetComponentsInChildren<CanvasRenderer>()[0].gameObject;
             deathText = deathUI.GetComponentsInChildren<CanvasRenderer>()[1].gameObject;

@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -29,11 +30,17 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public GameObject playerUI;
     public Text healthText;
     public string roleName = "No Role";
+    public Text roleText;
+    public Image roleImage;
+    public string username = "No Name";
+
+    PlayerlistManager plm;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+        plm = GetComponent<PlayerlistManager>();
 
         playerManager = PhotonView.Find((int) PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
@@ -43,24 +50,25 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if(PV.IsMine)
         {
             EquipItem(0);
+            RoleManager.Instance.SetRoles(GameObject.FindGameObjectsWithTag("Player"));
+            InitializeRole(roleName);
             InitializeName(PhotonNetwork.NickName);
+            plm.UpdatePlayerlist();
             Cursor.lockState = CursorLockMode.Locked;
             
             foreach (Item item in items) {
                 ((GunInfo) item.itemInfo).currentAmmo = ((GunInfo) item.itemInfo).maxAmmo;
+                ((GunInfo) item.itemInfo).nextTimeToFire = Time.time + 1f;
             }
             healthText.text = "100/100 Health";
             ((Gun) items[itemIndex]).RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
-            ((GunInfo) items[itemIndex].itemInfo).nextTimeToFire = 1f;
-
-            RoleManager.Instance.SetRoles(GameObject.FindGameObjectsWithTag("Player"));
-            InitializeRole(roleName);
         }
         else {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
             Destroy(playerUI);
         }
+        PV.RPC(nameof(plm.UpdatePlayerlist), RpcTarget.Others);
     }
 
     void Update()
@@ -86,7 +94,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             if (itemIndex <= 0) EquipItem(items.Length - 1);
             else                EquipItem(itemIndex - 1);
         }
-        
+
         if (Input.GetMouseButtonDown(0)) {
             if (Time.time >= ((GunInfo) items[itemIndex].itemInfo).nextTimeToFire) {
                 if (!((GunInfo) items[itemIndex].itemInfo).isReloading) {
@@ -102,13 +110,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (Input.GetKeyDown(KeyCode.R) && !((GunInfo) items[itemIndex].itemInfo).isReloading && ((GunInfo) items[itemIndex].itemInfo).currentAmmo < ((GunInfo) items[itemIndex].itemInfo).maxAmmo) {
             ((Gun) items[itemIndex]).Reload();
             ((Gun) items[itemIndex]).RefreshAmmoDisplay(((GunInfo) items[itemIndex].itemInfo).currentAmmo, ((GunInfo) items[itemIndex].itemInfo).maxAmmo);
         }
-        // if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.G)) {
-        //     PV.RPC("RPC_StartRound", RpcTarget.All);
-        // }
     }
 
 
@@ -162,8 +167,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (!PV.IsMine && targetPlayer == PV.Owner) {
             if (changedProps["itemIndex"] != null) EquipItem((int) changedProps["itemIndex"]);
-            if (changedProps["nameTag"]   != null) InitializeName((string) changedProps["nameTag"]);
-            if (changedProps["roleName"]  != null) InitializeRole((string) changedProps["roleName"]);
+            if (changedProps["nameTag"]   != null) InitializeName(((string) changedProps["nameTag"]));
+            if (changedProps["roleName"]  != null) InitializeRole(((string) changedProps["roleName"]));
         }
     }
     public void SetGroundedState(bool _grounded)
@@ -197,18 +202,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    // [PunRPC]
-    // void RPC_StartRound() {
-    //     RoleManager.Instance.SetRoles(GameObject.FindGameObjectsWithTag("Player"));
-    //     InitializeRole(roleName);
-    // }
-
-    void InitializeName(string username) {
-        nameTag.text = username;
+    void InitializeName(string _username) {
+        nameTag.text = _username;
+        username = _username;
         
         if (PV.IsMine) {
             Hashtable hash = new Hashtable();
-            hash.Add("nameTag", username);
+            hash.Add("nameTag", _username);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
             nameTag.text = PhotonNetwork.NickName;
         }
@@ -217,9 +217,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         playerManager.Die();
     }
 
-    void InitializeRole(string _roleName) {
+    public void InitializeRole(string _roleName) {
         roleName = _roleName;
         nameTag.color = RoleManager.Instance.GetColor(roleName);
+        roleText.text = roleName;
+        roleImage.color = RoleManager.Instance.GetColor(roleName);
 
         if (PV.IsMine) {
             Hashtable hash = new Hashtable();
