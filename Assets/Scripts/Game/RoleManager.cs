@@ -8,7 +8,7 @@ public class RoleManager : MonoBehaviour
     public static RoleManager Instance;
     public float preperationTime;
     Role[] roles;
-    ArrayList availableRoles;
+    public ArrayList availableRoles;
     private void Awake() {
         Instance = this;
         roles = GetComponentsInChildren<Role>();
@@ -25,7 +25,6 @@ public class RoleManager : MonoBehaviour
         
         for (int i = 0; i < players.Length; i++) {
             players[i].GetComponent<PlayerController>().role = GetRoleByName((string) availableRoles.ToArray()[i]);
-            // players[i].GetComponent<PlayerController>().PV.RPC("RPC_InitializeRole", RpcTarget.All, players[i].GetComponent<PlayerController>().role.roleName);
         }
         players[0].GetComponent<PlayerController>().InitializeRole(availableRoles.ToArray());
 

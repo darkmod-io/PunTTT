@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public Image roleImage;
     public Role role;
     public string username = "No Name";
+    Player[] _players;
 
 
     void Awake()
@@ -164,7 +165,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (!PV.IsMine && targetPlayer == PV.Owner) {
             if (changedProps["itemIndex"] != null) EquipItem((int) changedProps["itemIndex"]);
             if (changedProps["nameTag"]   != null) InitializeName(((string) changedProps["nameTag"]));
-            // if (changedProps["roleName"]  != null) InitializeRole(((string) changedProps["roleName"]));
+            if (changedProps["roleName"]  != null) PV.RPC("RPC_InitializeRole", RpcTarget.All, (((string) changedProps["roleName"])));
         }
     }
     public void SetGroundedState(bool _grounded)
@@ -217,23 +218,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     }
 
     public void InitializeRole(object[] availableRoles) {
+        Player[] _players = PhotonNetwork.PlayerList;
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         for (int i = 0; i < players.Length; i++) {
-            PV.RPC("RPC_InitializeRole", PhotonNetwork.PlayerList[i], availableRoles[i]);
+            PV.RPC("RPC_InitializeRole", _players[i], availableRoles[i]);
         }
     }
 
     [PunRPC]
     public void RPC_InitializeRole(string _roleName) {
-        role = RoleManager.Instance.GetRoleByName(_roleName);      
+        role = RoleManager.Instance.GetRoleByName(_roleName);
         nameTag.GetComponent<TextMeshPro>().color = role.GetColor();
-        roleText.text = role.roleName;
-        roleImage.color = role.GetColor();
+        if (PV.IsMine) {
+            roleText.text = role.roleName;
+            roleImage.color = role.GetColor();
+            Hashtable hash = new Hashtable();
+            hash.Add("roleName", role.roleName);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
 
-        // if (PV.IsMine) {
-        //     Hashtable hash = new Hashtable();
-        //     hash.Add("roleName", role.roleName);
-        //     PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-        // }
     }
 }
