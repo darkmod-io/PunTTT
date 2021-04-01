@@ -5,5 +5,8 @@ using UnityEngine;
 public class Role : MonoBehaviour
 {
     public string roleName;
-    public Color roleColor;
+    [SerializeField] Color roleColor;
+    public Color GetColor() {
+        return this.roleColor;
+    }
 }

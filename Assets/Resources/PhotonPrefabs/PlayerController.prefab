@@ -884,12 +884,13 @@ MonoBehaviour:
   items:
   - {fileID: 7862023489689660810}
   - {fileID: 254395006331588167}
-  nameTag: {fileID: 4424443795907201912}
+  PV: {fileID: 0}
+  nameTag: {fileID: 4424443795907201915}
   playerUI: {fileID: 2373366232117953861}
   healthText: {fileID: 1346298734334347789}
-  roleName: No Role
   roleText: {fileID: 9156477528779362515}
   roleImage: {fileID: 6776164476323711448}
+  role: {fileID: 0}
   username: 
 --- !u!114 &6594580403496616389
 MonoBehaviour:
@@ -921,7 +922,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isReloading
   m_SynchronizeLayers:
   - SynchronizeType: 1

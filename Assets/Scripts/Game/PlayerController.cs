@@ -19,22 +19,22 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     Vector3 moveAmount;
 
     Rigidbody rb;
-    PhotonView PV;
+    public PhotonView PV;
 
     const float maxHealth = 100f;
     float currentHealth = maxHealth;
 
     PlayerManager playerManager;
-    public TMP_Text nameTag;
+    PlayerlistManager plm;
 
+    public GameObject nameTag;
     public GameObject playerUI;
     public Text healthText;
-    public string roleName = "No Role";
     public Text roleText;
     public Image roleImage;
+    public Role role;
     public string username = "No Name";
 
-    PlayerlistManager plm;
 
     void Awake()
     {
@@ -50,8 +50,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if(PV.IsMine)
         {
             EquipItem(0);
-            RoleManager.Instance.SetRoles(GameObject.FindGameObjectsWithTag("Player"));
-            InitializeRole(roleName);
             InitializeName(PhotonNetwork.NickName);
             plm.UpdatePlayerlist();
             Cursor.lockState = CursorLockMode.Locked;
@@ -116,8 +114,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-
-
     void Look()
     {
         transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
@@ -168,7 +164,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (!PV.IsMine && targetPlayer == PV.Owner) {
             if (changedProps["itemIndex"] != null) EquipItem((int) changedProps["itemIndex"]);
             if (changedProps["nameTag"]   != null) InitializeName(((string) changedProps["nameTag"]));
-            if (changedProps["roleName"]  != null) InitializeRole(((string) changedProps["roleName"]));
+            // if (changedProps["roleName"]  != null) InitializeRole(((string) changedProps["roleName"]));
         }
     }
     public void SetGroundedState(bool _grounded)
@@ -202,32 +198,42 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    void InitializeName(string _username) {
-        nameTag.text = _username;
+    
+    void Die() {
+        playerManager.Die();
+    }
+
+    public void InitializeName(string _username) {
         username = _username;
+        nameTag.GetComponent<TextMeshPro>().text = username;
+        name = username;
         
         if (PV.IsMine) {
             Hashtable hash = new Hashtable();
             hash.Add("nameTag", _username);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-            nameTag.text = PhotonNetwork.NickName;
+            nameTag.GetComponent<TextMeshPro>().text = PhotonNetwork.NickName;
         }
     }
-    void Die() {
-        playerManager.Die();
+
+    public void InitializeRole(object[] availableRoles) {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < players.Length; i++) {
+            PV.RPC("RPC_InitializeRole", PhotonNetwork.PlayerList[i], availableRoles[i]);
+        }
     }
 
-    public void InitializeRole(string _roleName) {
-        roleName = _roleName;
-        nameTag.color = RoleManager.Instance.GetColor(roleName);
-        roleText.text = roleName;
-        roleImage.color = RoleManager.Instance.GetColor(roleName);
+    [PunRPC]
+    public void RPC_InitializeRole(string _roleName) {
+        role = RoleManager.Instance.GetRoleByName(_roleName);      
+        nameTag.GetComponent<TextMeshPro>().color = role.GetColor();
+        roleText.text = role.roleName;
+        roleImage.color = role.GetColor();
 
-        if (PV.IsMine) {
-            Hashtable hash = new Hashtable();
-            hash.Add("roleName", roleName);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-            nameTag.text = PhotonNetwork.NickName;
-        }
+        // if (PV.IsMine) {
+        //     Hashtable hash = new Hashtable();
+        //     hash.Add("roleName", role.roleName);
+        //     PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        // }
     }
 }

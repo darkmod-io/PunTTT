@@ -17,11 +17,9 @@ public class SingleShotGun : Gun
 
     public override void Use() {
         if (((GunInfo) itemInfo).currentAmmo > 0) {
-            // if (((GunInfo) itemInfo).currentAmmo == 1) ((GunInfo) itemInfo).nextTimeToFire = Time.time + 1f;
             Shoot();   
         }
         else {
-            // ((GunInfo) itemInfo).nextTimeToFire = Time.time + 1f;
             Reload();
         }
     }

@@ -1854,6 +1854,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab54f684d66e8840b15e35e98fae6d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tFactor: 0.2
+  preperationTime: 2.5
 --- !u!4 &1383800057
 Transform:
   m_ObjectHideFlags: 0
@@ -2090,7 +2092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roleName: Innocent
-  roleColor: {r: 0.13736707, g: 0.5188679, b: 0.090557136, a: 1}
+  roleColor: {r: 0.12915154, g: 0.4716981, b: 0.08677466, a: 1}
 --- !u!43 &1602639806
 Mesh:
   m_ObjectHideFlags: 0

@@ -1,12 +1,13 @@
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerManager : MonoBehaviour
 {
     PhotonView PV;
 
-    GameObject controller;
+    public GameObject controller;
     GameObject deathUI;
     GameObject deathScreen;
     GameObject deathText;
